@@ -19,6 +19,7 @@ data class FlagsObject(
     var picture:String
 )
 data class CurrencyObject(
+    @field:Json(name ="AWG")
     var AWG: AwgObject
 )
 data class IddObject(

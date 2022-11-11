@@ -18,6 +18,7 @@ data class CountriesDto(
     var flags: FlagsObject,
     @field:Json(name = "coatOfArms")
     var coatOfArmsImg: CoatOfArmsObject,
+    @field:Json(name = "currencies")
     var currencies: CurrencyObject,
     var dialCode: IddObject,
     var drivingSide: CarObject
