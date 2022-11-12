@@ -4,6 +4,7 @@ data class Country(
     val capital: String,
     val region: String,
     val languages: String,
+    val population: Int,
     val demonyns: String,
     val independent: Boolean?,
     val unMember: Boolean,

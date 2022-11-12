@@ -2,6 +2,7 @@ package com.example.explorr.ui
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.explorr.data.CountryRepository
@@ -10,6 +11,8 @@ import com.example.explorr.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -17,10 +20,15 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class MainViewModel @Inject constructor (private val countryRepository: CountryRepository): ViewModel() {
+class MainViewModel @Inject constructor (
+    private val savedStateHandle: SavedStateHandle,
+    private val countryRepository: CountryRepository): ViewModel() {
+    private val _stateFlow = MutableSharedFlow<UiState>()
+    val stateFlow = _stateFlow.asSharedFlow()
 
     private val _countryListScreenState = mutableStateOf(CountryListScreenState())
     val countryListScreenState: State<CountryListScreenState> = _countryListScreenState
+
 
     private val _countryDetailScreenState = mutableStateOf(CountryDetailScreenState())
     val countryDetailScreenState: State<CountryDetailScreenState> = _countryDetailScreenState
@@ -29,9 +37,15 @@ class MainViewModel @Inject constructor (private val countryRepository: CountryR
 
     val filteredList = mutableListOf<Country>()
 
-    init {
 
+
+    init {
+        viewModelScope.launch {
+            onEvent(UiState.LightMode)
+
+        }
         getCountry()
+
     }
 
     private fun getCountry() {
@@ -97,4 +111,30 @@ class MainViewModel @Inject constructor (private val countryRepository: CountryR
         val error: String = "",
         val searchQuery: String = ""
     )
+
+    fun onEvent (state: UiState){
+        when(state){
+            is UiState.DarkMode -> {
+                viewModelScope.launch {
+                    _stateFlow.emit(
+                        UiState.DarkMode
+                    )
+                }
+            }
+            is UiState.LightMode -> {
+                viewModelScope.launch {
+                    _stateFlow.emit(
+                        UiState.LightMode
+                    )
+                }
+            }
+        }
+    }
+
+
+
+    sealed class UiState{
+        object DarkMode: UiState()
+        object LightMode: UiState()
+    }
 }
