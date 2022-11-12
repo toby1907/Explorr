@@ -83,6 +83,18 @@ class MainViewModel @Inject constructor (private val countryRepository: CountryR
         }
 
     }
+    data class CountryDetailScreenState(
+        val country: Country? = null
+    )
 
+    sealed class CountryListScreenEvent {
+        data class OnSearchQueryChange(val query: String): CountryListScreenEvent()
+    }
 
+    data class CountryListScreenState(
+        val countries: List<Country> = emptyList(),
+        val isLoading: Boolean = false,
+        val error: String = "",
+        val searchQuery: String = ""
+    )
 }
