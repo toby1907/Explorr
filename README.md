@@ -8,7 +8,7 @@ How to Use
 Component and libraries used
 the app was built following the modern android development best practises
 - Jetpack Compose
--Viewmode
+-Viewmodel
 -repository pattern
 -Retrofit2
 -coil
