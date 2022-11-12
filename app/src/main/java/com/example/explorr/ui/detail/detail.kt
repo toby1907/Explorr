@@ -134,31 +134,31 @@ fun CountryImage(country: Country) {
 fun CountryDetailsSectionOne(country: Country){
     Column {
         Text(text = buildAnnotatedString {
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Medium)) {
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Medium)) {
                 append(stringResource(id = R.string.population))
             }
             append(" ")
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Light)){
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Light)){
                 append(country.population.toString())
             }
         })
 
         Text(text = buildAnnotatedString {
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Medium)) {
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Medium)) {
                 append(stringResource(id = R.string.region))
             }
             append(" ")
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Light)){
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Light)){
                 append(country.region)
             }
         }, modifier = Modifier.padding(top = 4.dp))
 
         Text(text = buildAnnotatedString {
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Medium)) {
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Medium)) {
                 append(stringResource(id = R.string.capital))
             }
             append("   ")
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Light)){
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Light)){
                 append(country.capital)
             }
         }, modifier = Modifier.padding(top = 4.dp))
@@ -169,41 +169,41 @@ fun CountryDetailsSectionOne(country: Country){
 fun CountryDetailsSectionTwo(country: Country){
     Column {
         Text(text = buildAnnotatedString {
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Medium)) {
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Medium)) {
                 append(stringResource(id = R.string.official_language))
             }
             append(" ")
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Light)){
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Light)){
                 append(country.languages)
             }
         })
 
         Text(text = buildAnnotatedString {
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Medium)) {
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Medium)) {
                 append(stringResource(id = R.string.demonym))
             }
             append(" ")
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Light)){
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Light)){
                 append(country.demonyns)
             }
         }, modifier = Modifier.padding(top = 4.dp))
 
         Text(text = buildAnnotatedString {
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Medium)) {
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Medium)) {
                 append(stringResource(id = R.string.independent))
             }
             append("  ")
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Light)){
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Light)){
                 append(if (country.independent == true) "Yes" else "No")
             }
         }, modifier = Modifier.padding(top = 4.dp))
 
         Text(text = buildAnnotatedString {
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Medium)) {
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Medium)) {
                 append(stringResource(id = R.string.un_member))
             }
             append("  ")
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Light)){
+            withStyle(style = SpanStyle(fontWeight = FontWeight.Light)){
                 append(if (country.unMember) "Yes" else "No")
             }
         }, modifier = Modifier.padding(top = 4.dp))
@@ -215,31 +215,31 @@ fun CountryDetailsSectionTwo(country: Country){
 fun CountryDetailsSectionThree(country: Country){
     Column {
         Text(text = buildAnnotatedString {
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Medium)) {
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Medium)) {
                 append(stringResource(id = R.string.area))
             }
             append(" ")
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Light)){
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Light)){
                 append(country.area + " km2")
             }
         })
 
         Text(text = buildAnnotatedString {
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Medium)) {
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Medium)) {
                 append(stringResource(id = R.string.landlocked))
             }
             append(" ")
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Light)){
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Light)){
                 append(if (country.isLandLocked) "Yes" else "No")
             }
         }, modifier = Modifier.padding(top = 4.dp))
 
         Text(text = buildAnnotatedString {
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Medium)) {
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Medium)) {
                 append(stringResource(id = R.string.currency))
             }
             append("  ")
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Light)){
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Light)){
                 if (country.currency != null) {
                     append(country.currency)
                 } else {
@@ -250,11 +250,11 @@ fun CountryDetailsSectionThree(country: Country){
         }, modifier = Modifier.padding(top = 4.dp))
 
         Text(text = buildAnnotatedString {
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Medium)) {
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Medium)) {
                 append(stringResource(id = R.string.currency_symbol))
             }
             append("  ")
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Light)){
+            withStyle(style = SpanStyle(fontWeight = FontWeight.Light)){
                 if (country.currencySymbol != null) {
                     append(country.currencySymbol)
                 } else {
@@ -270,31 +270,31 @@ fun CountryDetailsSectionThree(country: Country){
 fun CountryDetailsSectionFour(country: Country){
     Column {
         Text(text = buildAnnotatedString {
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Medium)) {
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Medium)) {
                 append(stringResource(id = R.string.time_zone))
             }
             append(" ")
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Light)){
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Light)){
                 append(country.timeZone)
             }
         })
 
         Text(text = buildAnnotatedString {
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Medium)) {
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Medium)) {
                 append(stringResource(id = R.string.dialling_code))
             }
             append(" ")
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Light)){
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Light)){
                 append(country.diallingCode)
             }
         }, modifier = Modifier.padding(top = 4.dp))
 
         Text(text = buildAnnotatedString {
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Medium)) {
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Medium)) {
                 append(stringResource(id = R.string.driving_side))
             }
             append("  ")
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Light)){
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Light)){
                 append(country.drivingSide)
 
 
@@ -302,11 +302,11 @@ fun CountryDetailsSectionFour(country: Country){
         }, modifier = Modifier.padding(top = 4.dp))
 
         Text(text = buildAnnotatedString {
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Medium)) {
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Medium)) {
                 append(stringResource(id = R.string.geographical_location))
             }
             append("  ")
-            withStyle(style = SpanStyle(color = LightTextBlack, fontWeight = FontWeight.Light)){
+            withStyle(style = SpanStyle( fontWeight = FontWeight.Light)){
 
                 append(country.geographicalLocation)
 
