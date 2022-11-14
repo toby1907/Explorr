@@ -3,6 +3,7 @@
 How to Use
 -Select a country from the countries provided
 -click on the search bar to search for any country of your choice.
+-click on the filter button to filter base on the region of the world and time zone
 - click on the light icon to change the mode of the display.
 
 Component and libraries used
@@ -15,4 +16,4 @@ the app was built following the modern android development best practises
 -flow and coroutine
 
 appetizer link
-https://appetize.io/app/pvavyn64rhnngpsoua34phhjti
+https://appetize.io/app/pv2c4rwachhsjydtoawmhxw734
