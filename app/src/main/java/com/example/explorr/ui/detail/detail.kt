@@ -44,7 +44,7 @@ val countryName: String = viewModel.countryDetailScreenState.value.country?.name
 
     Scaffold(
         topBar = {
-            TopAppBar(
+            CenterAlignedTopAppBar(
                 title = {
                     Text(
                         text = countryName,
@@ -53,7 +53,9 @@ val countryName: String = viewModel.countryDetailScreenState.value.country?.name
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { navController.navigate(Screen.MainScreen.route)}) {
+                    IconButton(onClick = {
+                        navController.navigateUp()
+                    /* navController.navigate(Screen.MainScreen.route)*/}) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "Localized description"

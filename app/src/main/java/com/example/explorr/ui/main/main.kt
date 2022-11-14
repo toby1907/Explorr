@@ -1,5 +1,6 @@
 package com.example.explorr.ui.main
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -7,7 +8,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
 import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -17,19 +28,28 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.explorr.R
 import com.example.explorr.data.domain.Country
 import com.example.explorr.ui.MainViewModel
 import com.example.explorr.ui.Screen
+import com.example.explorr.ui.theme.FilterButton
+import com.example.explorr.ui.theme.fonts
+import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class,
+    ExperimentalMaterialApi::class
+)
 @Composable
 fun FullScreen(viewModel: MainViewModel,nav: NavController){
     var menuExpanded by remember{
@@ -37,10 +57,31 @@ fun FullScreen(viewModel: MainViewModel,nav: NavController){
     }
 
     val context = LocalContext.current.applicationContext
-    Scaffold(
+    val scope = rememberCoroutineScope()
+    val scaffoldState = rememberBottomSheetScaffoldState()
+    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
+    )
+    BottomSheetScaffold(
+        scaffoldState=bottomSheetScaffoldState,
+        sheetPeekHeight = 0.dp,
+        sheetShape = RoundedCornerShape(16.dp),
         topBar = {
             TopAppBar(
-                title = { Text("Explorr.") },
+                title = {  Spacer(Modifier.width(8.dp))
+                    Text(
+                        text = buildAnnotatedString {
+                            withStyle(SpanStyle(fontFamily = fonts, fontSize = 20.sp)) {
+                                append("Explorr")
+                            }
+                            withStyle(SpanStyle(fontFamily = fonts, fontSize = 20.sp, color = FilterButton)) {
+                                append(".")
+                            }
+                        },
+                        fontSize = 24.sp,
+                        fontFamily =fonts,
+                        color = MaterialTheme.colorScheme.onSurface
+                    ) },
                 actions = {
                     IconButton(
                         onClick = {
@@ -65,18 +106,58 @@ viewModel.onEvent(MainViewModel.UiState.DarkMode)
             )
         },
         content = { innerPadding ->
-           TopSection(viewModel = viewModel, nav =nav, Modifier.padding(innerPadding))
+           TopSection(viewModel = viewModel, nav =nav, Modifier.padding(innerPadding), butttonOnClick = {
+               scope.launch {
+
+                   if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
+                       bottomSheetScaffoldState.bottomSheetState.expand()
+                   } else {
+                       bottomSheetScaffoldState.bottomSheetState.collapse()
+                   }
+               }
+           })
+        },
+        sheetContent = {
+
+            FilterScreen(close={ scope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() } }, viewModel = viewModel)
+           /* Box(
+                Modifier
+                    .fillMaxWidth()
+                    .height(164.dp)
+                    .clip(RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text("Swipe up to expand sheet")
+            }
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(64.dp)
+                    .clip(RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp))
+                ,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text("Sheet content")
+                Spacer(Modifier.height(20.dp))
+                Button(
+                    onClick = {
+                        scope.launch { bottomSheetScaffoldState.bottomSheetState.collapse() }
+                    }
+                ) {
+                    Text("Click to collapse sheet")
+                }
+            }*/
+            }
+            )
         }
-    )
-}
+
 
 @Composable
-fun TopSection(viewModel: MainViewModel, nav:NavController,modifier: Modifier=Modifier){
+fun TopSection(viewModel: MainViewModel, nav:NavController,modifier: Modifier=Modifier, butttonOnClick: () -> Unit){
 
     Column {
-        Spacer(modifier =Modifier.size(64.dp))
         SearchBar( viewModel)
-        FilterSection()
+        FilterSection(butttonOnClick = butttonOnClick)
         CountrySection(viewModel,nav)
     }
 }
@@ -87,8 +168,7 @@ fun SearchBar( viewModel: MainViewModel){
         Surface(
             modifier = Modifier
                 .fillMaxWidth(),
-            color = MaterialTheme.colorScheme.primary,
-            shadowElevation = 8.dp,
+            color = MaterialTheme.colorScheme.surface,
 
             ) {
             Row (
@@ -111,11 +191,7 @@ fun SearchBar( viewModel: MainViewModel){
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text,
                         imeAction = ImeAction.Search,
-                    ),
-                    keyboardActions = KeyboardActions (onSearch ={
-                     TODO()
-                    } )
-                    ,
+                    )                    ,
                     leadingIcon = {
                         Icon(painter = painterResource(
                             id = R.drawable.search_fill0_wght400_grad0_opsz48
@@ -133,28 +209,40 @@ fun SearchBar( viewModel: MainViewModel){
 }
 
 @Composable
-fun FilterSection(modifier: Modifier = Modifier){
+fun FilterSection(modifier: Modifier = Modifier, butttonOnClick:()->Unit){
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
-
-        modifier= Modifier.fillMaxWidth()) {
-        IconButton(onClick = { /*TODO*/ }) {
-            Row(verticalAlignment = Alignment.CenterVertically,
+        modifier= Modifier
+            .fillMaxWidth()
+            .padding(start = 4.dp, end = 4.dp)
+    ) {
+        Button(
+            onClick = { /*TODO*/ },
+            Modifier.size(width = 73.dp, height = 40.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.primary
+            ),
+            shape = RectangleShape,
+            border = BorderStroke(2.dp, MaterialTheme.colorScheme.onSurface),
+            contentPadding = PaddingValues(0.dp),
+        ) {
+            Row(modifier = Modifier.padding(start = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start,
             )  {
                 Icon(
                     painter = painterResource(id = R.drawable.language_fill0_wght400_grad0_opsz48),
                     contentDescription = "language"
                 )
-                Text(modifier = Modifier.size(height = 48.dp, width = 64.dp),text = "EN")
+                Text(text = "EN")
             }
         }
-        Button(onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.onSurface,
-
-                )
+        Button(onClick = { butttonOnClick.invoke() },
+            Modifier.size(width = 86.dp, height = 40.dp),
+            shape = RectangleShape,
+            contentPadding = PaddingValues(0.dp),
         ) {
             Row( verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End) {
@@ -179,7 +267,8 @@ fun CountrySection(viewModel: MainViewModel, navController: NavController){
     ) {
        grouped.forEach{ (initial,countriesForIntial) ->
            stickyHeader {
-            Card( shape = RectangleShape
+            Card( shape = RectangleShape,
+                backgroundColor = MaterialTheme.colorScheme.surface
                 ,modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 4.dp)
